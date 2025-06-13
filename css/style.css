@@ -325,14 +325,6 @@ article{
     margin: 10px;
 }
 
-#pacman_sprite
-{
-    position: relative;
-    max-width: 64px;
-    min-width: 64px;
-    border: none;  
-}
-
 
 @media (min-width:700px) 
 {
