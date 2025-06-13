@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> Assignment 08 - COMP2132</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../css/style.css">
+        <script src="../scripts/hangman_game.js" defer></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="container">
+            <header class="header_section"> 
+         
+                <h1 class="header_text">HANG-MAN</h1>
+                <h2 class="header_text">COMP 2132</h2>
+                <h3 class="header_text">Final Project</h3>
+            </header>
+            <main>   
+                <div class="main_canvas">
+                    <article>
+                        <h2>HangMan</h2>
+                        <div class="product_image_canvas">
+                            <img id="main_image_view" src="../images/bike-1.jpg" alt="the hangman">                            
+                        </div> 
+                    </article>
+
+                    <article class="pacman_themed">
+                        <div class="hangman_info">
+                            <div class="word_canvas">
+                                <ul id ="guess_word">  
+                                </ul>
+                                <br>
+                                <h4 id="hint_element">hint hint</h4>                                
+                            </div>
+
+                            <div class="keyboard_canvas">
+                                <ul id="virtual_keyboard" class="input_keyboard">            
+                                </ul>
+                            </div>
+                        </div>                       
+                    </article>
+                    <article>
+                        <div id="Popup">
+                        
+                            <h4>End of Game Summary</h4>
+                            <p>
+                                You Win or Lose.
+                            </p>
+                            <p>                        
+                                Where X is any number from 0-9.
+                            </p>                        
+                            <button id = "replay_button">Play Again?</button>              
+                        </div>
+                    </article>  
+                </div>
+            </main>
+            <div>
+                <footer class ="footer_section">
+                    <div>
+                        <p>Comp 2132</p>
+                    </div>
+                </footer> 
+            </div>                       
+        </div>
+    </body>
+</html>
