@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title> Assignment 08 - COMP2132</title>
+        <title> Project - COMP2132</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/style.css">
@@ -13,8 +13,7 @@
     </head>
     <body>
         <div class="container">
-            <header class="header_section"> 
-         
+            <header class="header_section">          
                 <h1 class="header_text">HANG-MAN</h1>
                 <h2 class="header_text">COMP 2132</h2>
                 <h3 class="header_text">Final Project</h3>
@@ -23,6 +22,7 @@
                 <div class="main_canvas">
                     <article>
                         <h2>HangMan</h2>
+                        <h3 id="health_display"> some health</h3>
                         <div class="product_image_canvas">
                             <img id="main_image_view" src="../images/bike-1.jpg" alt="the hangman">                            
                         </div> 
@@ -47,13 +47,8 @@
                         <div id="Popup">
                         
                             <h4>End of Game Summary</h4>
-                            <p>
-                                You Win or Lose.
-                            </p>
-                            <p>                        
-                                Where X is any number from 0-9.
-                            </p>                        
-                            <button id = "replay_button">Play Again?</button>              
+                            <p id="win_lose_string"> You Win or Lose.</p>                       
+                            <button id="replay_button">Play Again?</button>              
                         </div>
                     </article>  
                 </div>
