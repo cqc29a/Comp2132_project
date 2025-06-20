@@ -21,17 +21,13 @@
   font-family: namco;
   src: url(../fonts/namco.ttf);
 }
+@font-face {
+  font-family: capcom;
+  src: url(../fonts/street-fighter-ii-large-colour.colr.ttf);
+}
 body {
   font-family: Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
-}
-
-img {
-  max-width: 100%;
-  border: rgb(114, 111, 111);
-  border-style: solid;
-  border-radius: 5px;
-  padding: 15px;
 }
 
 ul {
@@ -65,30 +61,15 @@ main {
 }
 
 .header_section {
-  background: linear-gradient(0deg, rgb(221, 221, 221), rgb(20, 12, 136));
+  background: linear-gradient(0deg, rgb(221, 221, 221), rgb(0, 0, 0));
   padding: 5px;
   border: rgb(12, 4, 41);
   border-radius: 5px;
   border-style: solid;
-  font-family: tr2n;
+  font-family: capcom;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.header_section h1 {
-  color: rgb(0, 236, 253);
-  filter: drop-shadow(3px 3px black);
-}
-
-.header_section h2 {
-  color: snow;
-  filter: drop-shadow(2px 2px black);
-}
-
-.header_section h3 {
-  color: rgb(245, 0, 0);
-  filter: drop-shadow(1px 1px black);
 }
 
 .footer_section {
@@ -200,84 +181,6 @@ article {
   justify-content: center;
 }
 
-.input_list {
-  display: grid;
-  grid-template-columns: 40px 40px 40px;
-  grid-template-rows: 40px 40px 40px;
-  grid-template-areas: "NW NORTH NE" "WEST MID EAST" "SW SOUTH SE";
-}
-
-#joystick_left {
-  grid-area: WEST;
-}
-
-#joystick_right {
-  grid-area: EAST;
-}
-
-#joystick_up {
-  grid-area: NORTH;
-}
-
-#joystick_down {
-  grid-area: SOUTH;
-}
-
-#joystick_stop {
-  grid-area: MID;
-}
-
-.rotate_button {
-  border: solid;
-  border-color: black;
-  background-color: grey;
-  border-radius: 5px;
-  width: 64px;
-  text-align: center;
-}
-
-.control_button {
-  border: solid;
-  border-color: black;
-  background-color: grey;
-  border-radius: 5px;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  padding: 5px;
-  align-content: center;
-}
-
-.pacman_themed {
-  width: 100%;
-  height: 100%;
-}
-
-.pacman_title {
-  font-family: namco;
-  color: yellow;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-  margin: 5px;
-}
-
-.pacman_info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.pacman_header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: gainsboro;
-  border: rgb(138, 29, 29);
-  width: 100%;
-  border-style: solid;
-  border-radius: 5px;
-  margin: 5px;
-}
-
 .button_highlight {
   background-color: greenyellow;
 }
@@ -295,4 +198,37 @@ article {
   max-width: 64px;
   min-width: 64px;
   border: none;
+}
+
+#Popup {
+  font-family: capcom;
+  font-size: 64px;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  top: -100px;
+}
+
+#replay_button {
+  font-size: 24px;
+  background-color: rgb(59, 128, 255);
+  border: 3px solid rgb(0, 64, 184);
+  border-radius: 5px;
+}
+
+.press_start_canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#press_start_button {
+  width: 120px;
+}
+
+#press_start_button:hover {
+  cursor: pointer;
 }

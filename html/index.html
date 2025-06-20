@@ -21,14 +21,31 @@
             <main>   
                 <div class="main_canvas">
                     <article>
+                        <img src="../images/sf2_marquee.webp" alt="streetfighter2 marquee">
                         <h2>HangMan</h2>
                         <h3 id="health_display"> some health</h3>
+                        <div class="press_start_canvas">
+                            <img class="press_start_button" id="press_start_button" src="../images/button.webp" alt="press start button">
+                            <h2>START</h2>
+                        </div>
+                        <div id ="HUD">
+                            <div class="health_canvas" id="P1_HEALTH">
+                                <div class="health_bar" id ="P1_HEALTH_METER"></div>
+                            </div>                            
+                            <div id ="KO_HUD">
+                                
+                            </div>
+                            <div class="health_bar" id ="P2_HEALTH">
+                                <div class="health_bar" id ="P2_HEALTH_METER"></div>
+                            </div>
+                        </div>
+
                         <div class="product_image_canvas">
                             <img id="main_image_view" src="../images/bike-1.jpg" alt="the hangman">                            
                         </div> 
                     </article>
 
-                    <article class="pacman_themed">
+                    <article id="game_widget" class="pacman_themed">
                         <div class="hangman_info">
                             <div class="word_canvas">
                                 <ul id ="guess_word">  
@@ -43,13 +60,10 @@
                             </div>
                         </div>                       
                     </article>
-                    <article>
-                        <div id="Popup">
-                        
-                            <h4>End of Game Summary</h4>
-                            <p id="win_lose_string"> You Win or Lose.</p>                       
-                            <button id="replay_button">Play Again?</button>              
-                        </div>
+                    <article id="Popup">                                              
+                        <h4>GAME OVER</h4>
+                        <p id="win_lose_string"> You Win or Lose.</p>                       
+                        <button id="replay_button">Play Again?</button>
                     </article>  
                 </div>
             </main>

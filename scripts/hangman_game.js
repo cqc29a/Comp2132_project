@@ -46,7 +46,7 @@ class InputKey
         const input_key = gHangman.mKeyboard.mLetters.get(_element_id);
         console.log("InputKey mKey: " +input_key.mKey +" disabled: " +input_key.mDisabled);        
         
-        if (input_key.mDisabled == false)
+        if (input_key.mDisabled == false && !gHangman.mGameOver)
         {
             //grey out key so it cant be used again
             const keyboard_element = document.getElementById(_element_id);
@@ -303,28 +303,78 @@ class HangmanGame
     mWinLoseElement;
     mReplayButtonElement;
     mHealthHUD;
+    mGameOver = false;
+    mPopupElement;
+    mRound;
+    mStartMusic;
+    mAudioInstance;
+    mPressStartButtonElement;
+    mGameStarted;
+    mGameWidget;
 
     constructor()
     {
         this.mKeyboard = new Keyboard();
         this.mGuessWord = new GuessWord();
         this.mHealthHUD = new HangmanHUD();
+        this.mRound         = 0;
+        this.mStartMusic    = 0;
+        this.mGameStarted   = false;
     }
     
     Init() 
     {
              
-        this.mWinLoseElement = document.getElementById("win_lose_string");
-        this.mReplayButtonElement = document.getElementById("replay_button");
+        this.mWinLoseElement            = document.getElementById("win_lose_string");
+        this.mReplayButtonElement       = document.getElementById("replay_button");
         this.mReplayButtonElement.addEventListener("click",gHangman.Reset);
+        this.mPopupElement              = document.getElementById("Popup");
+        this.mPressStartButtonElement   = document.getElementById("press_start_button");
+        this.mPressStartButtonElement.addEventListener("click",gHangman.PressStart);
+        this.mGameWidget                = document.getElementById("game_widget");
 
-        //reset variables
-        this.Reset();
+        //hide keyboard until they press start.
+        this.mGameWidget.style.display = "none";    
+        gHangman.HidePopUp();
+
     }
     
+
+    PressStart()
+    {   
+        console.log("PressStart");     
+        gHangman.mPressStartButtonElement.src = "../images/button_down.webp";
+        setTimeout(function()
+        {
+            if(!gHangman.mGameStarted)
+            {
+                gHangman.Reset();
+                gHangman.mGameStarted = true;
+                gHangman.mGameWidget.style.display ="block";
+            }
+            gHangman.mPressStartButtonElement.src = "../images/button.webp";
+
+        },1000);
+    }
+
+   
+    ShowPopUp()
+    {
+        this.mPopupElement.style.display = "flex";
+        console.log("Show Popup");
+    }
+
+    HidePopUp()
+    {
+        this.mPopupElement.style.display = "none";
+        console.log("Show Popup");
+    }
+
     WinGamePresentation()
-    {       
-        gHangman.mWinLoseElement.innerText = "You Win!";
+    {   
+        this.ShowPopUp();       
+        gHangman.mGameOver = true;    
+        gHangman.mWinLoseElement.innerText = "YOU WIN!";
         //play audio
         let audio = new Audio("../sounds/you-win.mp3");
         audio.play();
@@ -338,11 +388,14 @@ class HangmanGame
                     audio1.play();
             },1500);
         }
+        
     }
 
     LoseGamePresentation()
     {
-        gHangman.mWinLoseElement.innerText = "You Lose! The word was: " +gHangman.mGuessWord.mWordToGuess;
+        gHangman.ShowPopUp(); 
+        gHangman.mGameOver = true;
+        gHangman.mWinLoseElement.innerText = "YOU LOSE! WORD: " +gHangman.mGuessWord.mWordToGuess;
         //play audio
         let audio = new Audio("../sounds/you-lose.mp3");
         audio.play();
@@ -374,6 +427,36 @@ class HangmanGame
         }
     }
 
+    ShuffleMusic()
+    {
+        gHangman.mStartMusic++;
+        if (gHangman.mStartMusic > 4)
+        {
+           gHangman.mStartMusic = 0; 
+        }
+        //play round intro and music.
+        if (gHangman.mAudioInstance !== undefined)
+        {
+            gHangman.mAudioInstance.pause();
+        }
+        switch(gHangman.mStartMusic)
+        {
+            case 1:
+            gHangman.mAudioInstance = new Audio("../sounds/attract.mp3");           
+            break;
+            case 2:
+            gHangman.mAudioInstance = new Audio("../sounds/ken.mp3");           
+            break;
+            case 3:
+            gHangman.mAudioInstance = new Audio("../sounds/guile.mp3");           
+            break;
+            case 4:
+            gHangman.mAudioInstance = new Audio("../sounds/ryu.mp3");           
+            break;
+        }
+        gHangman.mAudioInstance.volume = 0.5;
+        gHangman.mAudioInstance.play();
+    }
 
     //replay
     Reset()
@@ -388,8 +471,31 @@ class HangmanGame
         //play audio
         let audio = new Audio("../sounds/coin.mp3");
         audio.play();
+        gHangman.mGameOver = false;
 
+        gHangman.HidePopUp();
+
+        gHangman.mRound++;
+        gHangman.ShuffleMusic();
+        
     }
+
+
+    Update()
+    {
+
+        //check if music is done and loop if required.
+        if (gHangman.mAudioInstance != undefined)
+        {
+            if (gHangman.mAudioInstance.ended)
+            {
+                gHangman.ShuffleMusic();
+            }
+        }        
+        setTimeout(gHangman.Update,2000);        
+       
+    }
+ 
 }
 
 
@@ -398,5 +504,5 @@ class HangmanGame
 
 
 let gHangman = new HangmanGame();
-
 gHangman.Init();
+gHangman.Update();
