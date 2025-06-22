@@ -13,39 +13,41 @@
     </head>
     <body>
         <div class="container">
-            <header class="header_section">          
+            <header class="header_section">    
+                <img src="../images/sf2_marquee.webp" alt="streetfighter2 marquee">      
                 <h1 class="header_text">HANG-MAN</h1>
-                <h2 class="header_text">COMP 2132</h2>
-                <h3 class="header_text">Final Project</h3>
             </header>
             <main>   
                 <div class="main_canvas">
                     <article>
-                        <img src="../images/sf2_marquee.webp" alt="streetfighter2 marquee">
-                        <h2>HangMan</h2>
-                        <h3 id="health_display"> some health</h3>
-                        <div class="press_start_canvas">
-                            <img class="press_start_button" id="press_start_button" src="../images/button.webp" alt="press start button">
-                            <h2>START</h2>
-                        </div>
+                        <h3 id="health_display">8/8</h3>
+                        
                         <div id ="HUD">
                             <div class="health_canvas" id="P1_HEALTH">
                                 <div class="health_bar" id ="P1_HEALTH_METER"></div>
                             </div>                            
                             <div id ="KO_HUD">
-                                
+                                <H1>KO</H1>
                             </div>
-                            <div class="health_bar" id ="P2_HEALTH">
+                            <div class="health_canvas" id ="P2_HEALTH">
                                 <div class="health_bar" id ="P2_HEALTH_METER"></div>
                             </div>
                         </div>
 
-                        <div class="product_image_canvas">
-                            <img id="main_image_view" src="../images/bike-1.jpg" alt="the hangman">                            
+                        <div class="screen_canvas">
+                           
+                            <img id="p1_sprite"         src="../images/ryu_idle_0.webp" alt="player1 sprite">
+                            <img id="fireball_sprite"   src="../images/fb.webp"         alt="hurricane punch sprite">                            
+                            <img id="p2_sprite"         src="../images/ken_idle_0.webp" alt="player2 sprite">
+                                                       
+                        </div>
+                        <div class="press_start_canvas">
+                            <img class="press_start_button" id="press_start_button" src="../images/button.webp" alt="press start button">
+                            <h2>START</h2>
                         </div> 
                     </article>
 
-                    <article id="game_widget" class="pacman_themed">
+                    <article id="game_widget">
                         <div class="hangman_info">
                             <div class="word_canvas">
                                 <ul id ="guess_word">  

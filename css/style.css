@@ -10,14 +10,6 @@
 }
 
 @font-face {
-  font-family: tron;
-  src: url(../fonts/tron.ttf);
-}
-@font-face {
-  font-family: tr2n;
-  src: url(../fonts/tr2n.ttf);
-}
-@font-face {
   font-family: namco;
   src: url(../fonts/namco.ttf);
 }
@@ -53,7 +45,7 @@ main {
 
 .container {
   max-width: 1080px;
-  min-width: 320px;
+  min-width: 900px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -61,7 +53,7 @@ main {
 }
 
 .header_section {
-  background: linear-gradient(0deg, rgb(221, 221, 221), rgb(0, 0, 0));
+  background: linear-gradient(0deg, rgb(0, 0, 0), rgb(221, 221, 221));
   padding: 5px;
   border: rgb(12, 4, 41);
   border-radius: 5px;
@@ -70,6 +62,11 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.header_text {
+  font-size: 32px;
+  padding: 15px;
 }
 
 .footer_section {
@@ -187,17 +184,11 @@ article {
 
 #arcade_screen {
   display: block;
-  background-color: black;
+  background-image: url("../images/usa_background.jpg");
   max-width: 100%;
   max-height: 600px;
   margin: 10px;
-}
-
-#pacman_sprite {
   position: relative;
-  max-width: 64px;
-  min-width: 64px;
-  border: none;
 }
 
 #Popup {
@@ -209,7 +200,7 @@ article {
   align-items: center;
   padding: 10px;
   position: relative;
-  top: -100px;
+  top: -300px;
 }
 
 #replay_button {
@@ -225,8 +216,81 @@ article {
   align-items: center;
 }
 
+.health_canvas {
+  border: rgb(248, 244, 0);
+  border-style: solid;
+  width: 250px;
+  height: 40px;
+  background-color: red;
+  flex: 1 1 auto;
+}
+
+#KO_HUD {
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+
+#HUD {
+  display: flex;
+  flex-direction: row;
+}
+
 #press_start_button {
-  width: 120px;
+  width: 64px;
+}
+
+.health_bar {
+  color: yellow;
+  width: 800px;
+  height: 40px;
+  z-index: 10;
+}
+
+#health_display {
+  text-align: center;
+}
+
+.screen_canvas {
+  margin: 10px;
+  width: 800px;
+  height: 240px;
+  background-image: url("../images/usa_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0px -60px;
+  border-radius: 5px;
+  border-style: solid;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+#fireball_sprite {
+  position: absolute;
+  transform: scaleX(-1);
+  top: 150px;
+  left: 400px;
+  width: 64px;
+  height: 32px;
+  z-index: 1;
+}
+
+#p1_sprite {
+  position: absolute;
+  transform: scaleX(-1);
+  top: 250px;
+  left: 400px;
+  width: 64px;
+  height: 96px;
+}
+
+#p2_sprite {
+  position: absolute;
+  top: 250px;
+  left: 464px;
+  width: 64px;
+  height: 96px;
 }
 
 #press_start_button:hover {

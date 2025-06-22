@@ -1,3 +1,373 @@
+const NUM_IDLE_FRAMES   = 4;
+const KEN_ATTACK_FRAMES = 6;
+const RYU_ATTACK_FRAMES = 4;
+const HIT_R_FRAMES  = 4;
+const WIN_FRAMES    = 3;
+
+
+
+const FRAME_TIME_MS     = 160;
+const IDLE_Y_POS        = 130;
+const IDLE_X_POS        = 330;
+
+const TALL_SPRITE_DELTA = 32;
+const TALL_Y_POS        = IDLE_Y_POS - TALL_SPRITE_DELTA;
+const IDLE_SPRITE_WIDTH = 64;
+
+
+class FireballSprite
+{
+    mFireballElement;
+    constructor()
+    {
+        this.mFireballElement = document.getElementById("fireball_sprite");
+    }
+    Display()
+    {
+        gFireball.mFireballElement.style.display="block";
+        setTimeout(()=>
+            {
+                gFireball.mFireballElement.style.display = "none";
+            },FRAME_TIME_MS);
+    }
+    Hide()
+    {
+         gFireball.mFireballElement.style.display = "none";
+    }
+
+}
+class PlayerSprite
+{
+    mCharacterID;
+    mAnimationID;
+    mRequestedAnimationID;
+    mAnimationFrame;
+    mPlayerSpriteElement;
+    constructor(character,sprite_element)
+    {
+        this.mCharacterID = character;
+        this.mPlayerSpriteElement = sprite_element;
+    }
+    
+    Init()
+    {
+        this.mAnimationID           = "idle";
+        this.mRequestedAnimationID  = "idle";
+        this.mAnimationFrame    = 0;
+        if (this.mCharacterID == "ryu")
+        {
+            requestAnimationFrame(this.RyuDoIdle);
+        }
+        else if(this.mCharacterID == "ken")
+        {
+            requestAnimationFrame(this.KenDoIdle);
+        }        
+    }
+
+    Reset()
+    {
+        if (this.mCharacterID == "ryu")
+        {
+            gRyu.mRequestedAnimationID = "idle";
+        }
+        else if(this.mCharacterID == "ken")
+        {
+             gKen.mRequestedAnimationID = "idle";
+        }       
+    }
+
+
+    RyuDoIdle()
+    {
+
+        if(gRyu.mAnimationFrame == 0)
+        {
+            gRyu.mPlayerSpriteElement.style.width   = `64px`;
+            gRyu.mPlayerSpriteElement.style.height  = `96px`;
+            gRyu.mPlayerSpriteElement.style.top     = `${IDLE_Y_POS}px`;
+            gRyu.mPlayerSpriteElement.style.left    = `${IDLE_X_POS}px`;
+        } 
+
+        //console.log("Player Sprite::DoIdle");
+        let new_frame_url = `../images/ryu_idle_${gRyu.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ryu" +" DoIdle mAnimationFrame: " +gRyu.mAnimationFrame + "new image :" +new_frame_url);
+        gRyu.mPlayerSpriteElement.src = new_frame_url;
+        gRyu.mAnimationFrame ++;
+        if(gRyu.mAnimationFrame > NUM_IDLE_FRAMES -1)
+        {
+            gRyu.mAnimationFrame = 0;
+            gRyu.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gRyu.RyuUpdate,FRAME_TIME_MS);
+    }
+    
+    KenDoIdle()
+    {
+        if(gKen.mAnimationFrame == 0)
+        {
+            gKen.mPlayerSpriteElement.style.width   = `64px`;
+            gKen.mPlayerSpriteElement.style.height  = `96px`;
+            let ken_x_pos = IDLE_X_POS + IDLE_SPRITE_WIDTH;
+            gKen.mPlayerSpriteElement.style.top     = `${IDLE_Y_POS}px`;
+            gKen.mPlayerSpriteElement.style.left    = `${ken_x_pos}px`;
+        } 
+        //console.log("KEN Player Sprite::DoIdle");
+        let new_frame_url = `../images/ken_idle_${gKen.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" DoIdle mAnimationFrame: " +gKen.mAnimationFrame + "new image :" +new_frame_url);
+        gKen.mPlayerSpriteElement.src = new_frame_url;
+        gKen.mAnimationFrame ++;
+        if(gKen.mAnimationFrame > NUM_IDLE_FRAMES -1)
+        {
+           
+
+            gKen.mAnimationFrame = 0;
+            gKen.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gKen.KenUpdate,FRAME_TIME_MS);
+    }
+
+    RyuDoAttack()
+    {
+        if (gRyu.mAnimationFrame == 0)
+        {
+
+            gRyu.mPlayerSpriteElement.style.width   = `128px`;
+            gRyu.mPlayerSpriteElement.style.height  = `96px`;
+         
+        }
+        //console.log("gRyu Player Sprite::gRyuDoAttack Y: " +gRyu.mPlayerSpriteElement.style.top);
+        let new_frame_url = `../images/ryu_fireb_${gRyu.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: RYU" +" RYUDoAttack mAnimationFrame: " +gRyu.mAnimationFrame + "new image :" +new_frame_url);
+        gRyu.mPlayerSpriteElement.src = new_frame_url;
+        if (gRyu.mAnimationFrame == 3)
+        {
+            let sound = new Audio("../sounds/fireball.mp3");
+            sound.play();
+            gKen.mRequestedAnimationID = "hit_react";
+            //show fireball
+            gFireball.Display();
+        }
+        gRyu.mAnimationFrame ++;
+        if(gRyu.mAnimationFrame > RYU_ATTACK_FRAMES -1)
+        {
+            gRyu.mAnimationFrame = 0;
+            gRyu.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gRyu.RyuUpdate,FRAME_TIME_MS);
+    }
+
+  
+
+    KenDoAttack()
+    {
+        if (gKen.mAnimationFrame == 0)
+        {
+            let sound = new Audio("../sounds/dp.mp3");
+            sound.play();
+            gKen.mPlayerSpriteElement.style.width   = `96px`;
+            gKen.mPlayerSpriteElement.style.height  = `128px`;
+            gKen.mPlayerSpriteElement.style.top     =  `${TALL_Y_POS}px`;
+            //play hit react on ryu
+            gRyu.mRequestedAnimationID ="hit_react";
+         
+        }
+        //console.log("KEN Player Sprite::KenDoAttack Y: " +gKen.mPlayerSpriteElement.style.top);
+        let new_frame_url = `../images/ken_dp_${gKen.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" KenDoAttack mAnimationFrame: " +gKen.mAnimationFrame + "new image :" +new_frame_url);
+        gKen.mPlayerSpriteElement.src = new_frame_url;
+        gKen.mAnimationFrame ++;
+        if(gKen.mAnimationFrame > KEN_ATTACK_FRAMES -1)
+        {
+            gKen.mAnimationFrame = 0;
+            gKen.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gKen.KenUpdate,FRAME_TIME_MS);
+    }
+
+    KenDoHitReaction()
+    {        
+        if (gKen.mAnimationFrame == 0)
+        {
+            let sound = new Audio("../sounds/hit.wav");
+            sound.play();
+            gKen.mPlayerSpriteElement.style.width   = `96px`;
+            gKen.mPlayerSpriteElement.style.height  = `96px`;            
+
+        }
+        //console.log("KEN Player Sprite::KenDoHitReaction");
+        let new_frame_url = `../images/ken_hit_r_${gKen.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" KenDoAttack mAnimationFrame: " +gKen.mAnimationFrame + "new image :" +new_frame_url);
+        gKen.mPlayerSpriteElement.src = new_frame_url;
+        gKen.mAnimationFrame ++;
+        if(gKen.mAnimationFrame > HIT_R_FRAMES -1)
+        {
+            gKen.mAnimationFrame = 0;
+            gKen.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gKen.KenUpdate,FRAME_TIME_MS);
+    }
+
+    RyuDoHitReaction()
+    {
+        if (gRyu.mAnimationFrame == 0)
+        {
+            let sound = new Audio("../sounds/hit.wav");
+            sound.play();
+            gRyu.mPlayerSpriteElement.style.width   = `96px`;
+            gRyu.mPlayerSpriteElement.style.height  = `96px`;
+            //gRyu.mPlayerSpriteElement.style.top     = `96px`;
+
+        }
+        //console.log("KEN Player Sprite::KenDoHitReaction");
+        let new_frame_url = `../images/ryu_hit_r_${gRyu.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" KenDoAttack mAnimationFrame: " +gRyu.mAnimationFrame + "new image :" +new_frame_url);
+        gRyu.mPlayerSpriteElement.src = new_frame_url;
+        gRyu.mAnimationFrame ++;
+        if(gRyu.mAnimationFrame > HIT_R_FRAMES -1)
+        {
+            gRyu.mAnimationFrame = 0;
+            gRyu.mRequestedAnimationID = "idle";
+        }
+        setTimeout(gRyu.RyuUpdate,FRAME_TIME_MS);
+    }
+
+    
+    KenDoWin()
+    {
+        //console.log("KEN Player Sprite::KenDoWin");
+        
+        if (gKen.mAnimationFrame == 0)
+        {
+            
+            gKen.mPlayerSpriteElement.style.width   = `64px`;
+            gKen.mPlayerSpriteElement.style.height  = `128px`;
+            gKen.mPlayerSpriteElement.style.top     = `${TALL_Y_POS}px`;
+        }
+
+        let new_frame_url = `../images/ken_win_${gKen.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" DoIdle mAnimationFrame: " +gKen.mAnimationFrame + "new image :" +new_frame_url);
+        gKen.mPlayerSpriteElement.src = new_frame_url;
+        gKen.mAnimationFrame ++;
+        if(gKen.mAnimationFrame > WIN_FRAMES -1)
+        {
+            gKen.mAnimationFrame = 2;           
+        }
+        setTimeout(gKen.KenUpdate,FRAME_TIME_MS);
+    }
+
+    RyuDoWin()
+    {
+        //console.log("KEN Player Sprite::KenDoWin");
+        
+        if (gRyu.mAnimationFrame == 0)
+        {
+            gRyu.mPlayerSpriteElement.style.width   = `64px`;
+            gRyu.mPlayerSpriteElement.style.height  = `128px`;
+            gRyu.mPlayerSpriteElement.style.top     = `${TALL_Y_POS}px`;
+        }
+
+        let new_frame_url = `../images/ryu_win_${gRyu.mAnimationFrame}.webp`;
+        //console.log("this CharacterID: Ken" +" DoIdle mAnimationFrame: " +gRyu.mAnimationFrame + "new image :" +new_frame_url);
+        gRyu.mPlayerSpriteElement.src = new_frame_url;
+        gRyu.mAnimationFrame ++;
+        if(gRyu.mAnimationFrame > WIN_FRAMES -1)
+        {
+            gRyu.mAnimationFrame = 2;        
+        }
+        setTimeout(gRyu.RyuUpdate,FRAME_TIME_MS);
+    }
+
+
+    RyuUpdate()
+    {
+        //console.log("Player Sprite Update");
+        //console.dir(this);
+        //if no new animation request
+        if (gRyu.mAnimationID != gRyu.mRequestedAnimationID)
+        {
+            //change animation
+            gRyu.mAnimationID = gRyu.mRequestedAnimationID;
+            gRyu.mAnimationFrame = 0;
+
+        }
+        
+        {
+            switch(gRyu.mAnimationID)
+            {
+                case "idle":
+                    {
+                        gRyu.RyuDoIdle();
+                    }
+                    break;
+                case "attack":
+                    {
+                        gRyu.RyuDoAttack();
+                    }
+                    break;
+                case "hit_react":
+                    {
+                        gRyu.RyuDoHitReaction();
+                    }
+                    break;
+                case "win":
+                    {
+                        gRyu.RyuDoWin();
+                    }
+                    break;
+                default:
+                    break;    
+            }
+        }
+    
+    }
+
+     KenUpdate()
+    {
+        //console.log("Player Sprite Update");
+        //console.dir(this);
+        //if no new animation request
+        if (gKen.mAnimationID != gKen.mRequestedAnimationID)
+        {
+            //change animation
+            gKen.mAnimationID = gKen.mRequestedAnimationID;
+            gKen.mAnimationFrame = 0;
+
+        }
+        
+        {
+            switch(gKen.mAnimationID)
+            {
+                case "idle":
+                    {
+                        gKen.KenDoIdle();
+                    }
+                    break;
+                case "attack":
+                    {
+                        gKen.KenDoAttack();
+                    }
+                    break;
+                case "hit_react":
+                    {
+                        gKen.KenDoHitReaction();
+                    }
+                    break;
+                case "win":
+                    {
+                        gKen.KenDoWin();
+                    }
+                    break;
+                default:
+                    break;    
+            }
+        }
+    }  
+
+}
+
+
+
+
 
 class InputKey
 {
@@ -25,7 +395,7 @@ class InputKey
     {
         this.mDisabled = false;
         //removed disabled class
-        console.log("Virtual Key Reset: " +this.mKey);
+        //console.log("Virtual Key Reset: " +this.mKey);
         const keyboard_element = document.getElementById(this.mKey);
         if (keyboard_element.classList.contains("disabled_button"))
         {
@@ -39,12 +409,12 @@ class InputKey
     {   
         
         const _element_id = event.target.getAttribute("id");
-        console.log("event target id: " +_element_id);     
+        //console.log("event target id: " +_element_id);     
         //console.log("Key Press: " +this.mKey);
        //console.log("This. InputKey mKey: " +this.mKey +" disabled: " +this.mDisabled);  
         
         const input_key = gHangman.mKeyboard.mLetters.get(_element_id);
-        console.log("InputKey mKey: " +input_key.mKey +" disabled: " +input_key.mDisabled);        
+        //console.log("InputKey mKey: " +input_key.mKey +" disabled: " +input_key.mDisabled);        
         
         if (input_key.mDisabled == false && !gHangman.mGameOver)
         {
@@ -109,9 +479,9 @@ class Keyboard
         elements.forEach(element =>{
             //some get pointer to Input key object
             const _element_id = element.getAttribute("id");
-            console.log("Got ElementID:" +_element_id);
+            //console.log("Got ElementID:" +_element_id);
             const InputKeyObject = this.mLetters.get(_element_id);
-            console.log("InputKey mKey: " +InputKeyObject.mKey +" disabled: " +InputKeyObject.mDisabled);
+           //console.log("InputKey mKey: " +InputKeyObject.mKey +" disabled: " +InputKeyObject.mDisabled);
             element.addEventListener("click",InputKeyObject.VirtualKeyboardClickHanlder);
             
         });
@@ -139,7 +509,7 @@ class GuessWord
 
     SetupWordSprites()
     {
-        console.log("SetupWordSprites: " +this.mWordToGuess +" HINT : " +this.mHint);   
+        //console.log("SetupWordSprites: " +this.mWordToGuess +" HINT : " +this.mHint);   
         for(let i=0;i<this.mWordToGuess.length;i++)
         {
             const character = this.mWordToGuess[i];
@@ -158,7 +528,7 @@ class GuessWord
         this.mWordToGuess = word;
         this.mHint = hint; 
         this.mNumberCharacters =  number_letters;
-        console.log("Setting guess word: " +this.mWordToGuess +" HINT : " +this.mHint);         
+        //console.log("Setting guess word: " +this.mWordToGuess +" HINT : " +this.mHint);         
     }
 
     async GetNewWord()
@@ -175,11 +545,11 @@ class GuessWord
             }
 
             const json = await response.json();
-            console.log(json);       
+            //console.log(json);       
             const _word     = json.word;
             const _hint     = json.hint;
             const _num_char = Number(json.numLetters);
-            console.log("Word: " +_word +" hint: " +_hint +" Num Char: " +_num_char);
+            //console.log("Word: " +_word +" hint: " +_hint +" Num Char: " +_num_char);
             this.SetGuessWord(_word.toUpperCase(),_hint,_num_char);
         }
 
@@ -201,7 +571,7 @@ class GuessWord
 
     HasLetter(letter)
     {
-        console.log("checking for letter: " +letter);
+        //console.log("checking for letter: " +letter);
         if (this.mWordToGuess != this.default_word)
         {
             let result = false;
@@ -209,23 +579,23 @@ class GuessWord
             {
                 if(this.mWordToGuess[i] == letter)
                 {
-                    console.log("found letter: " +letter);
+                    //console.log("found letter: " +letter);
                     result = true;
                 }
             }
 
             if (result == true)
             {
-                console.log("HasLetter: true");
+               // console.log("HasLetter: true");
                 return true;
             }
             else
             {
-                console.log("HasLetter: false1");
+                //console.log("HasLetter: false1");
                 return false;
             }       
         }
-        console.log("HasLetter: false2 guessword:" +this.mWordToGuess);
+       // console.log("HasLetter: false2 guessword:" +this.mWordToGuess);
         return false;
     }
 
@@ -238,7 +608,7 @@ class GuessWord
             {
                 if(this.mWordToGuess[i] == letter)
                 {
-                    console.log("Correctly Guessed:" +letter);
+                    //console.log("Correctly Guessed:" +letter);
                     this.mCharactersCorrect[i] = true;
                     this.mWordElement.children[i].innerText = letter;
                     correct_letter = true;
@@ -311,6 +681,8 @@ class HangmanGame
     mPressStartButtonElement;
     mGameStarted;
     mGameWidget;
+    mPlayer1;
+    mPlayer2;
 
     constructor()
     {
@@ -320,6 +692,7 @@ class HangmanGame
         this.mRound         = 0;
         this.mStartMusic    = 0;
         this.mGameStarted   = false;
+
     }
     
     Init() 
@@ -333,6 +706,10 @@ class HangmanGame
         this.mPressStartButtonElement.addEventListener("click",gHangman.PressStart);
         this.mGameWidget                = document.getElementById("game_widget");
 
+
+        gRyu.Init(); 
+        gKen.Init();
+
         //hide keyboard until they press start.
         this.mGameWidget.style.display = "none";    
         gHangman.HidePopUp();
@@ -342,7 +719,7 @@ class HangmanGame
 
     PressStart()
     {   
-        console.log("PressStart");     
+        //console.log("PressStart");     
         gHangman.mPressStartButtonElement.src = "../images/button_down.webp";
         setTimeout(function()
         {
@@ -361,33 +738,39 @@ class HangmanGame
     ShowPopUp()
     {
         this.mPopupElement.style.display = "flex";
-        console.log("Show Popup");
+        //console.log("Show Popup");
     }
 
     HidePopUp()
     {
         this.mPopupElement.style.display = "none";
-        console.log("Show Popup");
+       // console.log("Show Popup");
     }
 
     WinGamePresentation()
     {   
-        this.ShowPopUp();       
-        gHangman.mGameOver = true;    
-        gHangman.mWinLoseElement.innerText = "YOU WIN!";
-        //play audio
-        let audio = new Audio("../sounds/you-win.mp3");
-        audio.play();
+        setTimeout(()=>{
+            this.ShowPopUp();       
+            gHangman.mGameOver = true;    
+            gHangman.mWinLoseElement.innerText = "YOU WIN!";
+            //play audio
+            let audio = new Audio("../sounds/you-win.mp3");
+            audio.play();
 
-        if (gHangman.mHealth == default_health)
-        {
-            console.log("Play Perfect")
-            setTimeout(function()
+            if (gHangman.mHealth == default_health)
             {
-                  let audio1 = new Audio("../sounds/perfect.mp3");
-                    audio1.play();
-            },1500);
-        }
+                //console.log("Play Perfect")
+                setTimeout(function()
+                {
+                    let audio1 = new Audio("../sounds/perfect.mp3");
+                        audio1.play();
+                },1500);
+            }
+            setTimeout(()=>{gRyu.mRequestedAnimationID ="win";},1000);  
+        },2000);
+
+       
+      
         
     }
 
@@ -399,13 +782,14 @@ class HangmanGame
         //play audio
         let audio = new Audio("../sounds/you-lose.mp3");
         audio.play();
+        setTimeout(()=>{gKen.mRequestedAnimationID ="win";},1000);        
 
     }
 
     ReduceHealth()
     {
         this.mHealth--;
-        console.log("Health: " +this.mHealth +"/"+default_health);
+        //console.log("Health: " +this.mHealth +"/"+default_health);
         if (this.mHealth == 0)
         {
             this.LoseGamePresentation();
@@ -420,10 +804,12 @@ class HangmanGame
         if (has_word)
         {
             this.mGuessWord.DisplayLetter(input);
+            gRyu.mRequestedAnimationID ="attack";
         }
         else
         {
             this.ReduceHealth();
+            gKen.mRequestedAnimationID = "attack";
         }
     }
 
@@ -468,6 +854,7 @@ class HangmanGame
         gHangman.mKeyboard.Reset();
         gHangman.mWinLoseElement.innerText = "Game Playing";
 
+
         //play audio
         let audio = new Audio("../sounds/coin.mp3");
         audio.play();
@@ -477,6 +864,10 @@ class HangmanGame
 
         gHangman.mRound++;
         gHangman.ShuffleMusic();
+
+        gRyu.Reset();
+        gKen.Reset();
+
         
     }
 
@@ -502,7 +893,16 @@ class HangmanGame
 
 
 
+const ryu_sprite_element = document.getElementById("p1_sprite");
+const ken_sprite_element = document.getElementById("p2_sprite");
+let gHangman    = new HangmanGame();
 
-let gHangman = new HangmanGame();
+let gRyu        = new PlayerSprite("ryu",ryu_sprite_element);
+let gKen        = new PlayerSprite("ken",ken_sprite_element);
+let gFireball   = new FireballSprite();
+
+gFireball.Hide();
+   
 gHangman.Init();
+
 gHangman.Update();
