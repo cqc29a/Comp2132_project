@@ -101,12 +101,11 @@ article {
   margin: 10px;
   display: flex;
   flex-direction: column;
-  border: gray;
-  border-style: solid;
-  border-radius: 10px;
   padding: 5px;
   justify-content: flex-start;
-  box-shadow: 10px 5px 5px rgb(114, 111, 111);
+  box-shadow: 10px 10px 10px #5d5d5d;
+  border-radius: 10px;
+  border: 3px solid gray;
 }
 
 .word_canvas {
@@ -217,7 +216,7 @@ article {
 }
 
 .health_canvas {
-  border: rgb(248, 244, 0);
+  border: rgb(255, 255, 0);
   border-style: solid;
   width: 250px;
   height: 40px;
@@ -236,14 +235,26 @@ article {
   flex-direction: row;
 }
 
+#P1_HEALTH {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
+}
+
+#P2_HEALTH {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
 #press_start_button {
   width: 64px;
 }
 
 .health_bar {
-  color: yellow;
-  width: 800px;
+  background-color: rgb(253, 203, 38);
   height: 40px;
+  flex-grow: 1;
   z-index: 10;
 }
 

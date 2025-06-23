@@ -636,6 +636,25 @@ class GuessWord
 
         }
     }
+
+    GetNumberCorrect()
+    {
+        let number_characters_correct = 0;
+        for(let i=0;i<this.mCharactersCorrect.length;i++)
+        {
+            if (this.mCharactersCorrect[i] == true)
+            {
+                number_characters_correct++; 
+            }
+        }
+        return number_characters_correct;
+    }
+
+    GetWordLength()
+    {
+        let _length = this.mWordToGuess.length;
+        return _length;
+    }
 }
 
 const default_health = 8;
@@ -643,13 +662,21 @@ const default_health = 8;
 class HangmanHUD
 {
     mHealthElement;
+    mPlayer1Health;
+    mPlayer2Health;
+
     constructor()
     {
         this.mHealthElement = document.getElementById("health_display");
+        this.mPlayer1Health = document.getElementById("P1_HEALTH_METER");
+        this.mPlayer2Health = document.getElementById("P2_HEALTH_METER");
     }
     Reset()
     {
         this.mHealthElement.innerText =`${default_health}/${default_health}`;
+        //set bar to full
+         this.mPlayer1Health.style.flexGrow = 1;
+         this.mPlayer2Health.style.flexGrow = 1;
     }
 
     Init()
@@ -659,6 +686,19 @@ class HangmanHUD
     UpdateHealth()
     {
          this.mHealthElement.innerText =`${gHangman.mHealth}/${default_health}`;
+         //update our health
+         let percentage = (Number(gHangman.mHealth) / Number(default_health) ) ;
+         console.log("new health: " +percentage);
+         this.mPlayer1Health.style.flexGrow = percentage;
+    }
+
+    KenTakeDamage()
+    {
+        let correct             = gHangman.mGuessWord.GetNumberCorrect();
+        let total_characters    = gHangman.mGuessWord.GetWordLength();
+        
+        let damage_percent = Number(correct) / Number (total_characters);
+        this.mPlayer2Health.style.flexGrow = 1 - damage_percent;
     }
 }
 
@@ -797,6 +837,11 @@ class HangmanGame
         this.mHealthHUD.UpdateHealth();
     }
 
+    KenTakeDamage()
+    {
+        this.mHealthHUD.KenTakeDamage();
+    }
+
     HandleInput(input)
     {
         //check if word had letter.
@@ -805,6 +850,9 @@ class HangmanGame
         {
             this.mGuessWord.DisplayLetter(input);
             gRyu.mRequestedAnimationID ="attack";
+            //reduce kens health
+            this.KenTakeDamage();
+
         }
         else
         {

@@ -10,15 +10,17 @@
     padding: 0;
 }
 
-$primary-color: rgb(248, 244, 0);
+$primary-color: rgb(255, 255, 0);
 $health-color: rgb(252, 235, 0);
 $health_bar_width : 200px;
 
-@mixin MakeBorder($color,$style,$rounded_corners)
-{
 
+
+@mixin rounded-shaded-box($xoffset, $yoffset, $rounded-corners, $border-color){
+    box-shadow:$xoffset $yoffset 10px #5d5d5d;	  
+    border-radius:$rounded-corners;    
+    border:3px solid $border-color;    
 }
-
 
 @font-face
 {
@@ -124,13 +126,12 @@ article{
     margin: 10px;
     display: flex;
     flex-direction: column;
-    border: gray;
-    border-style: solid;
-    border-radius: 10px;
     padding: 5px;
     justify-content: flex-start;
-    box-shadow: 10px 5px 5px rgb(114, 111, 111);
+    @include rounded-shaded-box(10px,10px,10px,gray);
+
 }
+  
 
 .word_canvas{
     display: flex;
@@ -279,6 +280,20 @@ article{
     display:flex;
     flex-direction: row;
 }
+
+#P1_HEALTH
+{
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+}
+
+#P2_HEALTH
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
 #press_start_button
 {
     width: 64px;
@@ -286,9 +301,9 @@ article{
 
 .health_bar
 {
-    color: yellow;
-    width: 800px;
+    background-color: rgb(253, 203, 38); 
     height: 40px;
+    flex-grow: 1;
     z-index: 10;
     
 }
